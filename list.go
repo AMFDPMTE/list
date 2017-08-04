@@ -55,6 +55,7 @@ func (l *List) Insert(n uint) error {
 	return nil
 }
 
+// Length returns the number of Nodes in a given array
 func (l List) Length() (length uint) {
 	current := l.Root
 
@@ -65,7 +66,7 @@ func (l List) Length() (length uint) {
 	return
 }
 
-// Contains...
+// Contain checks whether or not the value is in a given list
 func (l List) Contain(val uint) (c bool) {
 	current := l.Root
 
@@ -78,6 +79,7 @@ func (l List) Contain(val uint) (c bool) {
 	return
 }
 
+// Remove the Node from the list
 func (l *List) Remove(n uint) error {
 	return nil
 }
