@@ -32,6 +32,10 @@ func (l *List) Insert(n uint) error {
 	for current != nil {
 		next = current.Next
 
+		if newNode.Value == current.Value {
+			return fmt.Errorf("duplicate value %v cannot be inserted", newNode.Value)
+		}
+
 		if next == nil {
 			// our new node is the last one in the list
 			current.Next = &newNode
@@ -48,6 +52,33 @@ func (l *List) Insert(n uint) error {
 		current = next // progress to the next node in the list
 	}
 
+	return nil
+}
+
+func (l List) Length() (length uint) {
+	current := l.Root
+
+	for current != nil {
+		length++
+		current = current.Next
+	}
+	return
+}
+
+// Contains...
+func (l List) Contain(val uint) (c bool) {
+	current := l.Root
+
+	for current != nil {
+		if current.Value == val {
+			return true
+		}
+		current = current.Next
+	}
+	return
+}
+
+func (l *List) Remove(n uint) error {
 	return nil
 }
 
