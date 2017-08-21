@@ -80,13 +80,57 @@ func (l List) Contain(val uint) (c bool) {
 }
 
 // Remove the Node from the list
+// why is *List(pointers?)
 func (l *List) Remove(n uint) error {
-	return nil
+	if l.Root == nil {
+		return fmt.Errorf("value does not exist in List or the list is empty")
+	}
+
+	prev, curr := l.Root, l.Root
+
+	if curr.Value == n {
+		l.Root = curr.Next
+		curr = nil
+		return nil
+	}
+
+	for {
+
+		// 1. Move cur to Next
+		curr = curr.Next
+
+		// 2. if cur is nil we have reached the end of the list and the value has
+		//    not been found; thus we error. If cur is not nil continue to step 3.
+		if curr == nil {
+			return fmt.Errorf("value did not exist in List")
+		}
+		// 3. if cur equals our n value, we found the value we wanted to remove. We
+		//    need to set prev.Next to cur.Next and cur.Next to nil; we have now
+		//    removed the value and can return. If cur did not equal our n value we
+		//    have not foud the value we wish to remove; proceed to step 4.
+		if curr.Value == n {
+			prev.Next = curr.Next
+			curr.Next = nil
+			return nil
+		}
+
+		// 4. We need to get prev and current to the same node (this was our initial
+		//    conditions for looping) - thus we make prev prev.Next. Prev and Cur
+		//    are now pointing at the same thing and we can loop.
+		prev = prev.Next
+
+	}
 }
 
 // String will return a comma seperated representation of the list
 func (l List) String() string {
 	s := "<start>"
+	e := "<end>"
+
+	if l.Root == nil {
+		s = s + e
+	}
+
 	if l.Root != nil {
 		n := l.Root
 		for n != nil {
