@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestList_Insert(t *testing.T) {
 	list := List{}
@@ -68,5 +70,83 @@ func TestList_Contains(t *testing.T) {
 
 	if e, a := false, list.Contain(2); e != a {
 		t.Fatalf("was expecting to return %v, but return %v", e, a)
+	}
+}
+
+func TestList_Remove_nil_List(t *testing.T) {
+	list := List{}
+	err := list.Remove(22)
+
+	if err == nil {
+		t.Fatal("Was expecting an error, but did not get one")
+	}
+}
+
+func TestList_remove_first_List_many(t *testing.T) {
+	list := List{}
+
+	list.Insert(5)
+	list.Insert(10)
+	list.Insert(15)
+	list.Insert(20)
+	list.Remove(5)
+
+	if e, a := false, list.Contain(5); e != a {
+		t.Fatalf("was expecting to return %v, but return %v", e, a)
+	}
+}
+
+func TestList_remove_first_List_one(t *testing.T) {
+	list := List{}
+
+	list.Insert(5)
+	list.Remove(5)
+
+	if e, a := false, list.Contain(5); e != a {
+		t.Fatalf("was expecting to return %v, but return %v", e, a)
+	}
+}
+
+func TestList_remove_last_list_five(t *testing.T) {
+	list := List{}
+
+	list.Insert(5)
+	list.Insert(10)
+	list.Insert(15)
+	list.Insert(20)
+	list.Insert(25)
+	list.Remove(25)
+
+	if e, a := false, list.Contain(25); e != a {
+		t.Fatalf("was expecting to return %v, but return %v", e, a)
+	}
+}
+
+func TestList_remove_remove_all_ten(t *testing.T) {
+	list := List{}
+
+	list.Insert(5)
+	list.Insert(10)
+	list.Insert(15)
+	list.Insert(20)
+	list.Insert(25)
+	list.Insert(30)
+	list.Insert(35)
+	list.Insert(40)
+	list.Insert(45)
+	list.Insert(50)
+
+	list.Remove(5)
+	list.Remove(10)
+	list.Remove(15)
+	list.Remove(20)
+	list.Remove(25)
+	list.Remove(30)
+	list.Remove(35)
+	list.Remove(40)
+	list.Remove(45)
+	list.Remove(50)
+	if e, a := uint(0), list.Length(); e != a {
+		t.Fatalf("was expecting a list of length %v, got %v", e, a)
 	}
 }
