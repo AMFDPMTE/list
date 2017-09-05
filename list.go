@@ -7,6 +7,15 @@ type List struct {
 	Root *Node
 }
 
+// New is a variadic function meaning it can take any number of argumnents as
+// input and create a new ordered list with them. The values probided may be out
+// of order (unordered). The list we produce will be ordered.
+func New(values ...uint16) (l *List) {
+	l = &List{} // init the ptr
+	// TODO: implement
+	return
+}
+
 // Insert will insert a new uint value into the list at the appropriate location
 // If the value was already in the list (duplicate) an error will be returned.
 func (l *List) Insert(n uint) error {
@@ -63,6 +72,14 @@ func (l List) Length() (length uint) {
 		length++
 		current = current.Next
 	}
+	return
+}
+
+// ValueAt returns the value at the specified position index. The list
+// is zero indexed meaning the first value is at 0. If an out of range index is
+// provided, an error is returned.
+func (l List) ValueAt(index int) (value uint16, err error) {
+	// TODO: implement
 	return
 }
 

@@ -1,8 +1,41 @@
 package main
 
 import (
+	"sort"
 	"testing"
 )
+
+func TestList_New(t *testing.T) {
+	values := []uint16{1, 2, 4, 8, 16, 32, 64, 128} // ordered
+	l := New(values...)
+
+	if e, a := len(values), l.Length(); uint(e) != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+
+	// TODO: use l.ValueAt to ensure the correct ordering
+}
+
+func TestList_New_noArguments(t *testing.T) {
+	l := New()
+
+	if e, a := uint(0), l.Length(); e != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+}
+
+func TestList_New_unordered(t *testing.T) {
+	values := []uint16{128, 32, 2, 8, 64, 4, 1, 16} // unordered
+	l := New(values...)
+
+	if e, a := len(values), l.Length(); uint(e) != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+
+	sort.Sort(uint16SliceSortAsc(values)) // sorts values
+
+	// TODO: use l.ValueAt to ensure the correct ordering
+}
 
 func TestList_Insert(t *testing.T) {
 	list := List{}
@@ -51,6 +84,37 @@ func TestLlist_length(t *testing.T) {
 	if e, a := uint(3), list.Length(); e != a {
 		t.Fatalf("was expecting a list of length %v, got %v", e, a)
 	}
+}
+
+func TestList_ValueAt(t *testing.T) {
+	values := []uint16{1, 2, 4, 8, 16, 32, 64, 128} // ordered
+
+	l := List{}
+	for _, v := range values {
+		l.Insert(v)
+	}
+
+	for index, e := range values {
+		if a := l.ValueAt(index); e != a {
+			t.Fatalf("Was expecting a value of %v at index %v, got %v", e, index, a)
+		}
+
+	}
+}
+
+func TestList_ValueAt_outOfBounds(t *testing.T) {
+	// empty list
+	l := List{}
+	if _, err := l.ValueAt(0); err == nil {
+		t.Fatal("Was expecting an error but did not get one for an empty list ValueAt")
+	}
+
+	l = List{}
+	l.Insert(5)
+	if _, err := l.ValueAt(99); err == nil {
+		t.Fatal("Was expecting an error but did not get one for an out of bounds index")
+	}
+
 }
 
 func TestList_Contains(t *testing.T) {
