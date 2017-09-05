@@ -18,7 +18,7 @@ func New(values ...uint16) (l *List) {
 
 // Insert will insert a new uint value into the list at the appropriate location
 // If the value was already in the list (duplicate) an error will be returned.
-func (l *List) Insert(n uint) error {
+func (l *List) Insert(n uint16) error {
 	newNode := Node{Value: n}
 
 	if l.Root == nil {
@@ -84,7 +84,7 @@ func (l List) ValueAt(index int) (value uint16, err error) {
 }
 
 // Contain checks whether or not the value is in a given list
-func (l List) Contain(val uint) (c bool) {
+func (l List) Contain(val uint16) (c bool) {
 	current := l.Root
 
 	for current != nil {
@@ -98,7 +98,8 @@ func (l List) Contain(val uint) (c bool) {
 
 // Remove the Node from the list
 // why is *List(pointers?)
-func (l *List) Remove(n uint) error {
+func (l *List) Remove(n uint16) error {
+
 	if l.Root == nil {
 		return fmt.Errorf("value does not exist in List or the list is empty")
 	}
@@ -112,7 +113,6 @@ func (l *List) Remove(n uint) error {
 	}
 
 	for {
-
 		// 1. Move cur to Next
 		curr = curr.Next
 
@@ -130,7 +130,6 @@ func (l *List) Remove(n uint) error {
 			curr.Next = nil
 			return nil
 		}
-
 		// 4. We need to get prev and current to the same node (this was our initial
 		//    conditions for looping) - thus we make prev prev.Next. Prev and Cur
 		//    are now pointing at the same thing and we can loop.
