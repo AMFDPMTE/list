@@ -95,7 +95,11 @@ func TestList_ValueAt(t *testing.T) {
 	}
 
 	for index, e := range values {
-		if a := l.ValueAt(index); e != a {
+		a, err := l.ValueAt(index)
+		if err != nil {
+			t.Fatalf("Was not expecting an error but got one %v", err)
+		}
+		if e != a {
 			t.Fatalf("Was expecting a value of %v at index %v, got %v", e, index, a)
 		}
 
