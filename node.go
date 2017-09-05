@@ -2,6 +2,6 @@ package main
 
 // Node is a single element in a list
 type Node struct {
-	Value uint
+	Value uint16
 	Next  *Node
 }
