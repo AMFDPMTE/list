@@ -106,16 +106,18 @@ func TestList_ValueAt(t *testing.T) {
 	}
 }
 
-func TestList_ValueAt_outOfBounds(t *testing.T) {
-	// empty list
+func TestList_ValueAt_emptyOutOfBounds(t *testing.T) {
 	l := List{}
 	if _, err := l.ValueAt(0); err == nil {
 		t.Fatal("Was expecting an error but did not get one for an empty list ValueAt")
 	}
+}
 
-	l = List{}
+func TestList_ValueAt_outOfBounds(t *testing.T) {
+	l := List{}
 	l.Insert(5)
-	if _, err := l.ValueAt(99); err == nil {
+	outOfBoundsIndex := int(l.Length()) + 1
+	if _, err := l.ValueAt(outOfBoundsIndex); err == nil {
 		t.Fatal("Was expecting an error but did not get one for an out of bounds index")
 	}
 
