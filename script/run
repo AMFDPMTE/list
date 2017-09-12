@@ -1,5 +1,5 @@
 set -e
 
 go build
-./ordered-uint-list
+./list
 go clean

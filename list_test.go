@@ -1,8 +1,41 @@
 package main
 
 import (
+	"sort"
 	"testing"
 )
+
+func TestList_New(t *testing.T) {
+	values := []uint16{1, 2, 4, 8, 16, 32, 64, 128} // ordered
+	l := New(values...)
+
+	if e, a := len(values), l.Length(); uint(e) != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+
+	// TODO: use l.ValueAt to ensure the correct ordering
+}
+
+func TestList_New_noArguments(t *testing.T) {
+	l := New()
+
+	if e, a := uint(0), l.Length(); e != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+}
+
+func TestList_New_unordered(t *testing.T) {
+	values := []uint16{128, 32, 2, 8, 64, 4, 1, 16} // unordered
+	l := New(values...)
+
+	if e, a := len(values), l.Length(); uint(e) != a {
+		t.Fatalf("Was expecting a list of length %v, got %v", e, a)
+	}
+
+	sort.Sort(uint16SliceSortAsc(values)) // sorts values
+
+	// TODO: use l.ValueAt to ensure the correct ordering
+}
 
 func TestList_Insert(t *testing.T) {
 	list := List{}
@@ -31,8 +64,11 @@ func TestList_Insert_duplicates(t *testing.T) {
 	}
 }
 
-func TestList_Length(t *testing.T) {
+func TestLlist_length(t *testing.T) {
 	list := List{}
+	if e, a := uint(0), list.Length(); e != a {
+		t.Fatalf("was expecting a list of length %v, got %v", e, a)
+	}
 
 	list.Insert(20)
 	if e, a := uint(1), list.Length(); e != a {
@@ -55,6 +91,43 @@ func TestList_Length_empty(t *testing.T) {
 	if e, a := uint(0), list.Length(); e != a {
 		t.Fatalf("was expecting a list of length %v, got %v", e, a)
 	}
+}
+
+func TestList_ValueAt(t *testing.T) {
+	values := []uint16{1, 2, 4, 8, 16, 32, 64, 128} // ordered
+
+	l := List{}
+	for _, v := range values {
+		l.Insert(v)
+	}
+
+	for index, e := range values {
+		a, err := l.ValueAt(index)
+		if err != nil {
+			t.Fatalf("Was not expecting an error but got one %v", err)
+		}
+		if e != a {
+			t.Fatalf("Was expecting a value of %v at index %v, got %v", e, index, a)
+		}
+
+	}
+}
+
+func TestList_ValueAt_emptyOutOfBounds(t *testing.T) {
+	l := List{}
+	if _, err := l.ValueAt(0); err == nil {
+		t.Fatal("Was expecting an error but did not get one for an empty list ValueAt")
+	}
+}
+
+func TestList_ValueAt_outOfBounds(t *testing.T) {
+	l := List{}
+	l.Insert(5)
+	outOfBoundsIndex := int(l.Length()) + 1
+	if _, err := l.ValueAt(outOfBoundsIndex); err == nil {
+		t.Fatal("Was expecting an error but did not get one for an out of bounds index")
+	}
+
 }
 
 func TestList_Contains(t *testing.T) {

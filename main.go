@@ -18,5 +18,4 @@ func main() {
 	// list.Remove(25)
 	// list.Remove(40)
 	fmt.Println(list)
-	fmt.Println(list.Length())
 }
