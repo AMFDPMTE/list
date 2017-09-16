@@ -2,6 +2,5 @@
 
 set -e
 
+go test ./... -v -p 1
 go run examples/main.go
-
-go clean
