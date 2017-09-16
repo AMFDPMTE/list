@@ -2,6 +2,6 @@
 
 set -e
 
-go build
-./list
+go run examples/main.go
+
 go clean

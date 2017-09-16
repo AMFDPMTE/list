@@ -1,4 +1,4 @@
-package main
+package list
 
 type uint16SliceSortAsc []uint16
 

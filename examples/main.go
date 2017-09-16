@@ -12,10 +12,9 @@ func main() {
 	out := l1.Serialize()
 	fmt.Println(out)
 
-	l2, err := Deserialize(data)
+	l2, err := list.Deserialize(out)
 	if err != nil {
 		panic(err)
 	}
-
 	fmt.Println(l2)
 }
